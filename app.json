@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "EmotionSense",
+    "slug": "emotionsense",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "backgroundColor": "#0b1326"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.emotionsense.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0b1326"
+      },
+      "package": "com.emotionsense.app"
+    }
+  }
+}
