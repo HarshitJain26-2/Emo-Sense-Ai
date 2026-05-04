@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary": "#640039",
+                    "surface": "#0b1326",
+                    "on-secondary": "#002e6a",
+                    "on-surface-variant": "#cfc2d6",
+                    "inverse-surface": "#dae2fd",
+                    "surface-container-high": "#222a3d",
+                    "on-secondary-container": "#e6ecff",
+                    "on-error": "#690005",
+                    "on-tertiary-fixed": "#3e0022",
+                    "on-tertiary-fixed-variant": "#8c0053",
+                    "on-surface": "#dae2fd",
+                    "surface-tint": "#ddb7ff",
+                    "outline": "#988d9f",
+                    "outline-variant": "#4d4354",
+                    "surface-dim": "#0b1326",
+                    "secondary-container": "#0566d9",
+                    "on-primary-fixed-variant": "#6900b3",
+                    "error-container": "#93000a",
+                    "inverse-primary": "#842bd2",
+                    "secondary-fixed": "#d8e2ff",
+                    "on-primary-fixed": "#2c0051",
+                    "surface-container-low": "#131b2e",
+                    "primary-fixed-dim": "#ddb7ff",
+                    "error": "#ffb4ab",
+                    "on-error-container": "#ffdad6",
+                    "primary": "#ddb7ff",
+                    "tertiary": "#ffb0cd",
+                    "primary-container": "#b76dff",
+                    "surface-container-highest": "#2d3449",
+                    "secondary-fixed-dim": "#adc6ff",
+                    "on-primary-container": "#400071",
+                    "inverse-on-surface": "#283044",
+                    "surface-variant": "#2d3449",
+                    "surface-container-lowest": "#060e20",
+                    "background": "#0b1326",
+                    "on-primary": "#490080",
+                    "tertiary-fixed": "#ffd9e4",
+                    "on-background": "#dae2fd",
+                    "secondary": "#adc6ff",
+                    "surface-container": "#171f33",
+                    "on-tertiary-container": "#570032",
+                    "on-secondary-fixed": "#001a42",
+                    "primary-fixed": "#f0dbff",
+                    "tertiary-container": "#f751a1",
+                    "surface-bright": "#31394d",
+                    "tertiary-fixed-dim": "#ffb0cd",
+                    "on-secondary-fixed-variant": "#004395"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "md": "24px",
+                    "gutter": "16px",
+                    "lg": "32px",
+                    "base": "8px",
+                    "xs": "4px",
+                    "sm": "12px",
+                    "container-padding": "24px",
+                    "xl": "48px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Inter"],
+                    "display-xl": ["Inter"],
+                    "label-bold": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "display-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "label-bold": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #0b1326; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .neo-inset {
+            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.5), inset -1px -1px 3px rgba(255,255,255,0.05);
+        }
+        .neo-pop {
+            box-shadow: 4px 4px 10px rgba(0,0,0,0.3), -2px -2px 6px rgba(255,255,255,0.02);
+        }
+        .line-chart-gradient {
+            fill: url(#chartGradient);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-on-background selection:bg-primary/30 min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-black/40 backdrop-blur-xl border-b border-white/10 flex justify-between items-center px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-purple-500 text-2xl">bubble_chart</span>
+<h1 class="text-xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 font-inter tracking-tight">EmotionSense</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-slate-400 hover:opacity-80 transition-opacity cursor-pointer">account_circle</span>
+</div>
+</header>
+<main class="mt-24 px-container-padding max-w-4xl mx-auto space-y-lg">
+<!-- Hero Section / Title -->
+<section>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">History</h2>
+<p class="text-on-surface-variant font-body-md mt-2">Your emotional journey over the last 7 days.</p>
+</section>
+<!-- Emotion Trends Graph (Neo-Glass Container) -->
+<section class="glass-card rounded-lg p-md neo-pop">
+<div class="flex justify-between items-end mb-md">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary">Trends</h3>
+<p class="text-label-bold text-on-surface-variant">Weekly Joy vs Stress</p>
+</div>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.6)]"></span>
+<span class="text-label-bold text-xs uppercase tracking-widest text-slate-400">Joy</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-blue-400 shadow-[0_0_8px_rgba(59,130,246,0.6)]"></span>
+<span class="text-label-bold text-xs uppercase tracking-widest text-slate-400">Stress</span>
+</div>
+</div>
+</div>
+<!-- Chart Placeholder (SVG) -->
+<div class="w-full h-48 relative mt-4">
+<svg class="w-full h-full preserve-3d" viewbox="0 0 400 100">
+<defs>
+<lineargradient id="joyGradient" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#A855F7;stop-opacity:0.2"></stop>
+<stop offset="100%" style="stop-color:#A855F7;stop-opacity:0"></stop>
+</lineargradient>
+<lineargradient id="stressGradient" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#3B82F6;stop-opacity:0.2"></stop>
+<stop offset="100%" style="stop-color:#3B82F6;stop-opacity:0"></stop>
+</lineargradient>
+</defs>
+<!-- Grid Lines -->
+<line stroke="white" stroke-dasharray="4" stroke-opacity="0.05" x1="0" x2="400" y1="20" y2="20"></line>
+<line stroke="white" stroke-dasharray="4" stroke-opacity="0.05" x1="0" x2="400" y1="50" y2="50"></line>
+<line stroke="white" stroke-dasharray="4" stroke-opacity="0.05" x1="0" x2="400" y1="80" y2="80"></line>
+<!-- Stress Line -->
+<path d="M0,80 Q50,40 100,60 T200,30 T300,70 T400,20" fill="none" stroke="#3B82F6" stroke-linecap="round" stroke-width="3"></path>
+<path d="M0,80 Q50,40 100,60 T200,30 T300,70 T400,20 V100 H0 Z" fill="url(#stressGradient)"></path>
+<!-- Joy Line -->
+<path d="M0,60 Q60,20 120,40 T240,10 T360,50 T400,30" fill="none" stroke="#A855F7" stroke-linecap="round" stroke-width="3"></path>
+<path d="M0,60 Q60,20 120,40 T240,10 T360,50 T400,30 V100 H0 Z" fill="url(#joyGradient)"></path>
+</svg>
+<div class="flex justify-between mt-4 text-[10px] text-slate-500 uppercase tracking-tighter font-bold">
+<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+</div>
+</div>
+</section>
+<!-- Filter Pill Buttons -->
+<section class="flex flex-wrap gap-sm">
+<button class="px-6 py-2 rounded-full font-label-bold text-sm bg-gradient-to-tr from-blue-600 to-purple-600 text-white shadow-[0_0_15px_rgba(168,85,247,0.4)] active:scale-95 duration-150">All</button>
+<button class="px-6 py-2 rounded-full font-label-bold text-sm glass-card text-on-surface-variant neo-inset active:scale-95 duration-150">Joy</button>
+<button class="px-6 py-2 rounded-full font-label-bold text-sm glass-card text-on-surface-variant neo-inset active:scale-95 duration-150">Stress</button>
+<button class="px-6 py-2 rounded-full font-label-bold text-sm glass-card text-on-surface-variant neo-inset active:scale-95 duration-150">Calm</button>
+</section>
+<!-- Timeline List -->
+<section class="space-y-gutter">
+<!-- Timeline Item 1 -->
+<div class="glass-card rounded-lg p-gutter flex items-center gap-md group hover:bg-white/5 transition-all">
+<div class="w-12 h-12 rounded-full bg-tertiary-container/20 flex items-center justify-center neo-inset text-tertiary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">sentiment_very_satisfied</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-headline-md text-lg text-on-surface">Peak Joy Detected</h4>
+<span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">2h ago</span>
+</div>
+<p class="text-body-md text-on-surface-variant text-sm mt-1">High-frequency positive verbal cues during the morning briefing.</p>
+</div>
+<span class="material-symbols-outlined text-slate-600 group-hover:text-primary transition-colors">chevron_right</span>
+</div>
+<!-- Timeline Item 2 -->
+<div class="glass-card rounded-lg p-gutter flex items-center gap-md group hover:bg-white/5 transition-all border-l-4 border-blue-400/50">
+<div class="w-12 h-12 rounded-full bg-secondary-container/20 flex items-center justify-center neo-inset text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">emoticon</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-headline-md text-lg text-on-surface">Elevated Stress</h4>
+<span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">5h ago</span>
+</div>
+<p class="text-body-md text-on-surface-variant text-sm mt-1">Slightly increased speech rate and cortisol-mapped vocal tension.</p>
+</div>
+<span class="material-symbols-outlined text-slate-600 group-hover:text-primary transition-colors">chevron_right</span>
+</div>
+<!-- AI Insight Card (Special Border) -->
+<div class="relative p-[2px] rounded-lg bg-gradient-to-br from-blue-400 to-purple-600 overflow-hidden neo-pop">
+<div class="bg-[#0b1326] rounded-[14px] p-md">
+<div class="flex items-center gap-3 mb-3">
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+<span class="text-label-bold text-xs uppercase tracking-widest text-primary">AI Insight</span>
+</div>
+<p class="font-body-md text-on-surface leading-relaxed">
+                        You tend to experience a 15% drop in stress levels after 3:00 PM on days you logged a "Calm" morning session. Consider a 5-minute meditation at noon tomorrow.
+                    </p>
+</div>
+</div>
+<!-- Timeline Item 3 -->
+<div class="glass-card rounded-lg p-gutter flex items-center gap-md group hover:bg-white/5 transition-all">
+<div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center neo-inset text-on-surface-variant">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">self_improvement</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-headline-md text-lg text-on-surface">Deep Calm</h4>
+<span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Yesterday</span>
+</div>
+<p class="text-body-md text-on-surface-variant text-sm mt-1">Evening relaxation session. Heart rate variability stabilized.</p>
+</div>
+<span class="material-symbols-outlined text-slate-600 group-hover:text-primary transition-colors">chevron_right</span>
+</div>
+<!-- More content padding -->
+<div class="h-10"></div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-8 left-1/2 -translate-x-1/2 flex justify-around items-center px-4 py-2 z-50 bg-white/5 backdrop-blur-2xl w-[90%] max-w-md rounded-full border border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.8)]">
+<div class="text-slate-500 p-3 hover:text-purple-300 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">grid_view</span>
+</div>
+<div class="text-slate-500 p-3 hover:text-purple-300 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">analytics</span>
+</div>
+<div class="bg-gradient-to-tr from-blue-600 to-purple-600 text-white rounded-full p-3 shadow-[0_0_15px_rgba(168,85,247,0.5)] cursor-pointer scale-110 ring-2 ring-purple-400/30">
+<span class="material-symbols-outlined">history</span>
+</div>
+<div class="text-slate-500 p-3 hover:text-purple-300 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">settings</span>
+</div>
+</nav>
+<!-- Floating Emotion Orb (Decorative background elements) -->
+<div class="fixed top-[20%] right-[-10%] w-[400px] h-[400px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+<div class="fixed bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[150px] pointer-events-none -z-10"></div>
+</body></html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EmotionSense | Detection</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary": "#640039",
+            "surface": "#0b1326",
+            "on-secondary": "#002e6a",
+            "on-surface-variant": "#cfc2d6",
+            "inverse-surface": "#dae2fd",
+            "surface-container-high": "#222a3d",
+            "on-secondary-container": "#e6ecff",
+            "on-error": "#690005",
+            "on-tertiary-fixed": "#3e0022",
+            "on-tertiary-fixed-variant": "#8c0053",
+            "on-surface": "#dae2fd",
+            "surface-tint": "#ddb7ff",
+            "outline": "#988d9f",
+            "outline-variant": "#4d4354",
+            "surface-dim": "#0b1326",
+            "secondary-container": "#0566d9",
+            "on-primary-fixed-variant": "#6900b3",
+            "error-container": "#93000a",
+            "inverse-primary": "#842bd2",
+            "secondary-fixed": "#d8e2ff",
+            "on-primary-fixed": "#2c0051",
+            "surface-container-low": "#131b2e",
+            "primary-fixed-dim": "#ddb7ff",
+            "error": "#ffb4ab",
+            "on-error-container": "#ffdad6",
+            "primary": "#ddb7ff",
+            "tertiary": "#ffb0cd",
+            "primary-container": "#b76dff",
+            "surface-container-highest": "#2d3449",
+            "secondary-fixed-dim": "#adc6ff",
+            "on-primary-container": "#400071",
+            "inverse-on-surface": "#283044",
+            "surface-variant": "#2d3449",
+            "surface-container-lowest": "#060e20",
+            "background": "#0b1326",
+            "on-primary": "#490080",
+            "tertiary-fixed": "#ffd9e4",
+            "on-background": "#dae2fd",
+            "secondary": "#adc6ff",
+            "surface-container": "#171f33",
+            "on-tertiary-container": "#570032",
+            "on-secondary-fixed": "#001a42",
+            "primary-fixed": "#f0dbff",
+            "tertiary-container": "#f751a1",
+            "surface-bright": "#31394d",
+            "tertiary-fixed-dim": "#ffb0cd",
+            "on-secondary-fixed-variant": "#004395"
+          },
+          "borderRadius": {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "md": "24px",
+            "gutter": "16px",
+            "lg": "32px",
+            "base": "8px",
+            "xs": "4px",
+            "sm": "12px",
+            "container-padding": "24px",
+            "xl": "48px"
+          },
+          "fontFamily": {
+            "headline-md": ["Inter"],
+            "display-xl": ["Inter"],
+            "label-bold": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-lg": ["Inter"],
+            "body-md": ["Inter"]
+          },
+          "fontSize": {
+            "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+            "display-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+            "label-bold": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+            "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+            "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+            "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .neon-border-glow {
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.4), inset 0 0 15px rgba(59, 130, 246, 0.4);
+    }
+    .glass-effect {
+      backdrop-filter: blur(20px);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .neumorphic-pop {
+      box-shadow: -4px -4px 10px rgba(255, 255, 255, 0.05), 4px 4px 10px rgba(0, 0, 0, 0.5);
+    }
+    .neumorphic-inset {
+      box-shadow: inset -4px -4px 10px rgba(255, 255, 255, 0.05), inset 4px 4px 10px rgba(0, 0, 0, 0.5);
+    }
+    .audio-bar {
+      width: 4px;
+      border-radius: 2px;
+      background: linear-gradient(to top, #3b82f6, #a855f7);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body-md overflow-hidden h-screen flex flex-col">
+<!-- Background Orbs -->
+<div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+<div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary/10 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-secondary/10 rounded-full blur-[120px]"></div>
+</div>
+<!-- Header: Shared Component TopAppBar -->
+<header class="flex justify-between items-center px-6 py-4 w-full z-50 bg-black/40 backdrop-blur-xl border-b border-white/10 docked full-width top-0">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-purple-500">bubble_chart</span>
+<span class="font-inter tracking-tight font-bold text-xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">EmotionSense</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-slate-400 hover:opacity-80 transition-opacity active:scale-95 duration-150">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Main Canvas: Full Screen Detection View -->
+<main class="flex-1 relative flex flex-col items-center justify-center overflow-hidden">
+<!-- Camera View Placeholder -->
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-80" data-alt="A cinematic, shallow depth of field portrait of a young woman smiling warmly in a dark, high-tech interior environment. The lighting is dominated by soft teal and vibrant purple neon glows reflecting off her skin. The background is a sophisticated tech laboratory with blurred server lights and glass interfaces. The overall mood is futuristic, empathetic, and technologically advanced with a deep-space aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgNqkqIy3kiVUqDDCJyELjWf4V2gfgtw2qG63HRYbPj9mrtC5e561xL07aHzZaSLdb0oAmNliE5AeE5x4lB-GMazSglNB_ttsnZ9UO8Bauv73J99M75x6BBQaM6ATTpg1WIK-KGoa6grWE3NADggvA4wiYK3c6nBB_f1IBQxSu-ZI9Ue3IZuRqW76NH1nKZhoYkfdETqJG1Q59aZ1dphAFRJG1hr-dSPROQ5O_dxdXrQcPl_OkiVt1PfLr0qCqgRvSknE2cDMDYA"/>
+</div>
+<!-- Neon Bounding Box -->
+<div class="relative z-10 w-64 h-84 md:w-80 md:h-96 border-2 border-primary-container rounded-lg neon-border-glow flex flex-col items-center justify-start p-6">
+<!-- Corners for tech feel -->
+<div class="absolute -top-1 -left-1 w-6 h-6 border-t-4 border-l-4 border-white rounded-tl-md"></div>
+<div class="absolute -top-1 -right-1 w-6 h-6 border-t-4 border-r-4 border-white rounded-tr-md"></div>
+<div class="absolute -bottom-1 -left-1 w-6 h-6 border-b-4 border-l-4 border-white rounded-bl-md"></div>
+<div class="absolute -bottom-1 -right-1 w-6 h-6 border-b-4 border-r-4 border-white rounded-br-md"></div>
+<!-- Floating Real-time Label -->
+<div class="glass-effect px-4 py-2 rounded-full absolute -top-12 flex items-center gap-2 border border-primary/30">
+<span class="w-2 h-2 bg-primary rounded-full animate-pulse shadow-[0_0_8px_#ddb7ff]"></span>
+<span class="font-label-bold text-primary text-label-bold">Joy detected 94%</span>
+</div>
+</div>
+<!-- UI Overlay Bottom Section -->
+<div class="absolute bottom-32 left-0 right-0 z-20 flex flex-col items-center gap-8 px-6">
+<!-- Detection Controls Card -->
+<div class="w-full max-w-lg glass-effect rounded-lg p-6 flex flex-col gap-6">
+<div class="flex justify-between items-center">
+<div class="flex flex-col">
+<span class="text-on-surface-variant text-label-bold">CURRENT EMOTION</span>
+<span class="text-headline-md font-headline-md text-white">Ecstatic &amp; Positive</span>
+</div>
+<div class="flex gap-2">
+<div class="neumorphic-pop p-3 rounded-full glass-effect flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">share</span>
+</div>
+<div class="neumorphic-pop p-3 rounded-full glass-effect flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">bookmark</span>
+</div>
+</div>
+</div>
+<!-- Audio Waveform Visualization -->
+<div class="h-16 flex items-end justify-center gap-1.5 px-4 overflow-hidden">
+<div class="audio-bar h-[60%]" style="height: 40%"></div>
+<div class="audio-bar h-[40%]" style="height: 20%"></div>
+<div class="audio-bar h-[80%]" style="height: 70%"></div>
+<div class="audio-bar h-[100%]" style="height: 90%"></div>
+<div class="audio-bar h-[70%]" style="height: 60%"></div>
+<div class="audio-bar h-[30%]" style="height: 15%"></div>
+<div class="audio-bar h-[50%]" style="height: 45%"></div>
+<div class="audio-bar h-[90%]" style="height: 85%"></div>
+<div class="audio-bar h-[60%]" style="height: 50%"></div>
+<div class="audio-bar h-[40%]" style="height: 35%"></div>
+<div class="audio-bar h-[80%]" style="height: 75%"></div>
+<div class="audio-bar h-[100%]" style="height: 95%"></div>
+<div class="audio-bar h-[50%]" style="height: 40%"></div>
+<div class="audio-bar h-[30%]" style="height: 25%"></div>
+<div class="audio-bar h-[70%]" style="height: 65%"></div>
+<div class="audio-bar h-[90%]" style="height: 80%"></div>
+<div class="audio-bar h-[40%]" style="height: 30%"></div>
+<div class="audio-bar h-[60%]" style="height: 55%"></div>
+<div class="audio-bar h-[80%]" style="height: 70%"></div>
+<div class="audio-bar h-[100%]" style="height: 90%"></div>
+</div>
+</div>
+<!-- Stop/Pause Detection Button -->
+<button class="group relative flex items-center justify-center w-20 h-20 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-full shadow-[0_0_20px_rgba(168,85,247,0.6)] active:scale-95 transition-all duration-200">
+<div class="absolute inset-0 rounded-full bg-white/20 animate-ping opacity-25"></div>
+<span class="material-symbols-outlined text-white text-3xl font-bold" data-weight="fill">pause</span>
+</button>
+</div>
+</main>
+<!-- Navigation Shell: Shared Component BottomNavBar -->
+<nav class="fixed bottom-8 left-1/2 -translate-x-1/2 flex justify-around items-center px-4 py-2 z-50 bg-white/5 backdrop-blur-2xl w-[90%] max-w-md rounded-full border border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.8)]">
+<div class="text-slate-500 p-3 hover:text-purple-300 transition-colors active:ring-2 active:ring-purple-400/30 active:scale-110 duration-200">
+<span class="material-symbols-outlined">grid_view</span>
+</div>
+<div class="bg-gradient-to-tr from-blue-600 to-purple-600 text-white rounded-full p-3 shadow-[0_0_15px_rgba(168,85,247,0.5)] active:ring-2 active:ring-purple-400/30 active:scale-110 duration-200">
+<span class="material-symbols-outlined">analytics</span>
+</div>
+<div class="text-slate-500 p-3 hover:text-purple-300 transition-colors active:ring-2 active:ring-purple-400/30 active:scale-110 duration-200">
+<span class="material-symbols-outlined">history</span>
+</div>
+<div class="text-slate-500 p-3 hover:text-purple-300 transition-colors active:ring-2 active:ring-purple-400/30 active:scale-110 duration-200">
+<span class="material-symbols-outlined">settings</span>
+</div>
+</nav>
+<!-- Emotion Orb (Visual Feedback) -->
+<div class="fixed top-24 right-10 w-32 h-32 rounded-full blur-[40px] opacity-40 bg-primary pointer-events-none"></div>
+</body></html>
