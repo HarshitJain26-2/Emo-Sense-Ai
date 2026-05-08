@@ -30,6 +30,12 @@
           "photosPermission": "Allow EmotionSense to access your photos for emotional analysis.",
           "cameraPermission": "Allow EmotionSense to access your camera to capture photos or videos for analysis."
         }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow EmotionSense to access your camera for real-time emotional detection."
+        }
       ]
     ]
   }

@@ -17,7 +17,9 @@ import {
   StyleSheet,
   Animated,
   Dimensions,
+  Button,
 } from 'react-native';
+import { CameraView, useCameraPermissions } from 'expo-camera';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -30,10 +32,10 @@ const { width, height } = Dimensions.get('window');
 
 export default function DetectionScreen({ navigation }) {
   const insets = useSafeAreaInsets();
+  const [permission, requestPermission] = useCameraPermissions();
 
-  // Pulsing dot for "Joy detected" indicator
+  // Animation refs
   const pulseAnim = useRef(new Animated.Value(1)).current;
-  // Ping animation for stop button
   const pingAnim = useRef(new Animated.Value(1)).current;
   const pingOpacity = useRef(new Animated.Value(0.25)).current;
 
@@ -48,12 +50,40 @@ export default function DetectionScreen({ navigation }) {
 
     // Ping ring
     Animated.loop(
-      Animated.parallel([
-        Animated.timing(pingAnim, { toValue: 2, duration: 1500, useNativeDriver: true }),
-        Animated.timing(pingOpacity, { toValue: 0, duration: 1500, useNativeDriver: true }),
+      Animated.sequence([
+        Animated.parallel([
+          Animated.timing(pingAnim, { toValue: 2, duration: 1500, useNativeDriver: true }),
+          Animated.timing(pingOpacity, { toValue: 0, duration: 1500, useNativeDriver: true }),
+        ]),
+        Animated.parallel([
+          Animated.timing(pingAnim, { toValue: 1, duration: 0, useNativeDriver: true }),
+          Animated.timing(pingOpacity, { toValue: 0.25, duration: 0, useNativeDriver: true }),
+        ])
       ])
     ).start();
+
+    // Request permissions on mount if not already granted
+    if (!permission) {
+      requestPermission();
+    }
   }, []);
+
+  if (!permission) {
+    // Camera permissions are still loading
+    return <View style={styles.container} />;
+  }
+
+  if (!permission.granted) {
+    // Camera permissions are not granted yet
+    return (
+      <View style={[styles.container, styles.centered]}>
+        <Text style={styles.permissionText}>We need your permission to show the camera</Text>
+        <TouchableOpacity style={styles.permissionBtn} onPress={requestPermission}>
+          <Text style={styles.permissionBtnText}>Grant Permission</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   const handleStop = () => {
     navigation.navigate('Results');
@@ -61,13 +91,11 @@ export default function DetectionScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {/* Full-screen camera gradient placeholder */}
-      <LinearGradient
-        colors={['#0f172a', '#1e1b4b', '#0f172a']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={StyleSheet.absoluteFill}
-      />
+      {/* Full-screen camera feed */}
+      <CameraView style={StyleSheet.absoluteFill} facing="front" />
+      
+      {/* Dark overlay for better UI contrast */}
+      <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(0,0,0,0.3)' }]} />
 
       {/* Background orbs */}
       <View style={[styles.orbBlue, { top: -60, left: -60 }]} />
@@ -341,5 +369,30 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.6,
     shadowRadius: 20,
     elevation: 12,
+  },
+
+  // Permissions
+  centered: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: Spacing.lg,
+  },
+  permissionText: {
+    fontFamily: 'Inter_400Regular',
+    fontSize: 16,
+    color: Colors.onSurface,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  permissionBtn: {
+    backgroundColor: Colors.primary,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: BorderRadius.full,
+  },
+  permissionBtnText: {
+    fontFamily: 'Inter_700Bold',
+    fontSize: 15,
+    color: '#fff',
   },
 });
