@@ -16,6 +16,7 @@ import {
   ScrollView,
   StyleSheet,
   Animated,
+  Image,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -40,139 +41,157 @@ export default function ResultsScreen({ navigation }) {
     ).start();
   }, []);
 
+  const [selectedFrame, setSelectedFrame] = React.useState(1);
+
+  const timelineFrames = [
+    { id: 0, color: '#94a3b8', label: 'Neutral' },
+    { id: 1, color: '#a855f7', label: 'Surprise', active: true },
+    { id: 2, color: '#3b82f6', label: 'Calm' },
+    { id: 3, color: '#a855f7', label: 'Surprise' },
+    { id: 4, color: '#facc15', label: 'Joy' },
+  ];
+
   return (
     <View style={styles.container}>
       {/* Background orbs */}
       <EmotionOrb color="#173EA5" size={280} style={{ top: -80, left: -80 }} opacity={0.08} />
       <EmotionOrb color={Colors.primaryContainer} size={260} style={{ bottom: 100, right: -80 }} opacity={0.1} />
 
-      {/* Top App Bar */}
-      <TopAppBar onProfilePress={() => navigation.navigate('Profile')} />
+      {/* Top App Bar Replacement for Video Analysis Header */}
+      <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
+        <View style={styles.headerLeft}>
+          <Ionicons name="color-filter-outline" size={24} color={Colors.primary} />
+          <Text style={styles.headerTitle}>Video Analysis</Text>
+        </View>
+        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+          <Image 
+            source={{ uri: 'https://i.pravatar.cc/100' }} 
+            style={styles.profilePic} 
+          />
+        </TouchableOpacity>
+      </View>
 
       <ScrollView
         contentContainerStyle={[
           styles.scrollContent,
-          { paddingTop: insets.top + 72, paddingBottom: insets.bottom + 40 },
+          { paddingTop: 20, paddingBottom: insets.bottom + 40 },
         ]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Result Hero — Emoji Orb */}
-        <View style={styles.heroSection}>
-          {/* Glow behind orb */}
-          <LinearGradient
-            colors={['rgba(59,130,246,0.3)', 'rgba(168,85,247,0.3)']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.heroGlow}
-          />
+        {/* Main Video Player Frame */}
+        <View style={styles.videoPlayerContainer}>
+          <GlassCard style={styles.videoCard} borderRadius={BorderRadius.DEFAULT}>
+            <Image 
+              source={require('../assets/video_main.png')} 
+              style={styles.videoMainImage} 
+              resizeMode="cover"
+            />
+            {/* Emotion Badge */}
+            <View style={styles.videoEmotionBadge}>
+              <View style={styles.badgeDot} />
+              <Text style={styles.badgeText}>SURPRISE 82%</Text>
+            </View>
+            {/* Playback Controls Overlay */}
+            <View style={styles.videoControls}>
+              <Ionicons name="play" size={18} color="#fff" />
+              <View style={styles.progressBar}>
+                <View style={[styles.progressFill, { width: '65%' }]} />
+              </View>
+              <Text style={styles.timestampText}>02:45 / 04:12</Text>
+              <Ionicons name="expand" size={16} color="#fff" />
+            </View>
+          </GlassCard>
+        </View>
 
-          {/* Glassmorphism emoji circle */}
-          <Animated.View
-            style={[styles.emojiCircle, { transform: [{ translateY: floatAnim }] }]}
-          >
-            <Text style={styles.emojiText}>😊</Text>
-            {/* Happy badge */}
-            <View style={styles.happyBadge}>
-              <LinearGradient
-                colors={[Colors.gradientBlue, Colors.gradientPurple]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                style={styles.happyBadgeGrad}
+        {/* Emotional Timeline */}
+        <View style={styles.timelineSection}>
+          <Text style={styles.sectionTitle}>EMOTIONAL TIMELINE</Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.timelineScroll}>
+            {timelineFrames.map((frame) => (
+              <TouchableOpacity 
+                key={frame.id} 
+                onPress={() => setSelectedFrame(frame.id)}
+                style={[
+                  styles.timelineFrameWrapper,
+                  selectedFrame === frame.id && styles.timelineFrameActive
+                ]}
               >
-                <Text style={styles.happyBadgeText}>Happy</Text>
-              </LinearGradient>
-            </View>
-          </Animated.View>
+                <Image 
+                  source={require('../assets/video_timeline.png')} 
+                  style={styles.timelineFrameImage}
+                />
+                <View style={[styles.timelineDot, { backgroundColor: frame.color }]} />
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
 
-          {/* Headline */}
-          <View style={styles.headlineBlock}>
-            <Text style={styles.headlineText}>High Vitality</Text>
-            <View style={styles.certaintyBadge}>
-              <Ionicons name="checkmark-circle" size={16} color={Colors.secondary} />
-              <Text style={styles.certaintyText}>96% Certainty</Text>
+        {/* Moment Analysis Section */}
+        <GlassCard style={styles.momentCard} borderRadius={BorderRadius.DEFAULT}>
+          <View style={styles.momentHeader}>
+            <View>
+              <Text style={styles.momentTitle}>Moment Analysis</Text>
+              <Text style={styles.momentSubtitle}>Shift from Neutral to Surprise</Text>
+            </View>
+            <View style={styles.timestampBadge}>
+              <Text style={styles.timestampLabel}>Timestamp</Text>
+              <Text style={styles.timestampValue}>02:45</Text>
             </View>
           </View>
-        </View>
 
-        {/* AI Analysis Card */}
-        <View style={styles.aiCard}>
-          {/* Left accent bar */}
-          <LinearGradient
-            colors={['#60a5fa', Colors.gradientPurple]}
-            style={styles.accentBar}
-          />
-          <View style={styles.aiCardContent}>
-            <View style={styles.aiIconBg}>
-              <Ionicons name="bulb" size={20} color={Colors.primary} />
+          <View style={styles.vitalsRow}>
+            <View style={styles.vitalBadge}>
+              <Text style={styles.vitalValueText}>94%</Text>
+              <Text style={styles.vitalLabelText}>CONFIDENCE</Text>
             </View>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.aiCardTitle}>AI Analysis</Text>
-              <Text style={styles.aiCardBody}>
-                Your micro-expressions suggest a{' '}
-                <Text style={{ color: Colors.primary, fontFamily: 'Inter_700Bold' }}>
-                  peak in positive energy
-                </Text>
-                . You seem very focused and in a state of cognitive flow.
-              </Text>
+            <View style={styles.vitalBadge}>
+              <Text style={[styles.vitalValueText, { color: '#a855f7' }]}>High</Text>
+              <Text style={styles.vitalLabelText}>INTENSITY</Text>
             </View>
           </View>
-        </View>
 
-        {/* Data Bento Grid */}
-        <View style={styles.bentoGrid}>
-          <GlassCard style={styles.bentoCard} borderRadius={BorderRadius.DEFAULT}>
-            <Ionicons name="pulse" size={22} color="#60a5fa" />
-            <Text style={styles.bentoLabel}>Stability</Text>
-            <Text style={styles.bentoValue}>88%</Text>
-          </GlassCard>
-          <GlassCard style={styles.bentoCard} borderRadius={BorderRadius.DEFAULT}>
-            <Ionicons name="sparkles" size={22} color="#c084fc" />
-            <Text style={styles.bentoLabel}>Aura Level</Text>
-            <Text style={[styles.bentoValue, { fontSize: 20 }]}>Zen</Text>
-          </GlassCard>
-        </View>
-
-        {/* Recommended Actions */}
-        <View style={styles.actionsSection}>
-          <Text style={styles.actionsHeader}>Recommended Actions</Text>
-
-          {/* Action 1 */}
-          <TouchableOpacity activeOpacity={0.8} style={styles.actionRow}>
-            <LinearGradient
-              colors={[Colors.gradientBlue, Colors.gradientPurple]}
-              style={styles.actionIconGrad}
-            >
-              <Ionicons name="rocket" size={18} color="#fff" />
-            </LinearGradient>
-            <Text style={styles.actionText}>Keep this momentum!</Text>
-            <Ionicons name="chevron-forward" size={18} color={Colors.onSurfaceVariant} />
-          </TouchableOpacity>
-
-          {/* Action 2 */}
-          <TouchableOpacity activeOpacity={0.8} style={styles.actionRow}>
-            <View style={styles.actionIconGlass}>
-              <Ionicons name="share-social" size={18} color={Colors.secondary} />
+          <View style={styles.metricsList}>
+            <View style={styles.metricItem}>
+              <View style={styles.metricLabelRow}>
+                <Text style={styles.metricLabel}>Voice Fusion</Text>
+                <Text style={styles.metricValue}>78% Match</Text>
+              </View>
+              <View style={styles.metricBarBg}>
+                <LinearGradient 
+                  colors={['#a855f7', '#a855f7']} 
+                  style={[styles.metricBarFill, { width: '78%' }]} 
+                />
+              </View>
             </View>
-            <Text style={styles.actionText}>Share this moment</Text>
-            <Ionicons name="chevron-forward" size={18} color={Colors.onSurfaceVariant} />
-          </TouchableOpacity>
-        </View>
+            <View style={styles.metricItem}>
+              <View style={styles.metricLabelRow}>
+                <Text style={styles.metricLabel}>Facial Landmark Stability</Text>
+                <Text style={styles.metricValue}>91% Match</Text>
+              </View>
+              <View style={styles.metricBarBg}>
+                <LinearGradient 
+                  colors={['#3b82f6', '#3b82f6']} 
+                  style={[styles.metricBarFill, { width: '91%' }]} 
+                />
+              </View>
+            </View>
+          </View>
+        </GlassCard>
 
-        {/* New Scan CTA */}
-        <TouchableOpacity
-          activeOpacity={0.85}
-          onPress={() => navigation.navigate('Detection')}
-          style={styles.newScanWrapper}
-        >
-          <LinearGradient
-            colors={[Colors.gradientBlue, Colors.gradientPurple]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.newScanBtn}
-          >
-            <Text style={styles.newScanText}>New Emotion Scan</Text>
-          </LinearGradient>
-        </TouchableOpacity>
+        {/* Global Insights */}
+        <GlassCard style={styles.insightCard} borderRadius={BorderRadius.DEFAULT}>
+          <View style={styles.insightIconWrapper}>
+            <Ionicons name="sparkles" size={18} color="#a855f7" />
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.insightTitle}>GLOBAL INSIGHTS</Text>
+            <Text style={styles.insightBody}>
+              The subject showed a <Text style={{ color: '#a855f7', fontWeight: 'bold' }}>40% increase</Text> in engagement during the second half. Most significant shift occurred at 02:45.
+            </Text>
+          </View>
+        </GlassCard>
+
+        {/* Bottom Nav Placeholder (handled by navigator) */}
       </ScrollView>
     </View>
   );
@@ -186,226 +205,281 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingHorizontal: Spacing.gutter,
     gap: Spacing.md,
+    alignItems: 'stretch',
+  },
+  // Header
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: Spacing.gutter,
+    paddingBottom: 10,
+    zIndex: 10,
   },
-  // Hero
-  heroSection: {
+  headerLeft: {
+    flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 8,
-    gap: 20,
-    width: '100%',
+    gap: 12,
   },
-  heroGlow: {
-    position: 'absolute',
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-    opacity: 0.3,
-    top: 0,
+  headerTitle: {
+    fontFamily: 'Inter_700Bold',
+    fontSize: 22,
+    color: '#fff',
   },
-  emojiCircle: {
-    width: 180,
-    height: 180,
-    borderRadius: 90,
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.15)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 8,
-    elevation: 6,
-  },
-  emojiText: {
-    fontSize: 88,
-  },
-  happyBadge: {
-    position: 'absolute',
-    bottom: -4,
-    right: -4,
-    borderRadius: BorderRadius.full,
-    overflow: 'hidden',
+  profilePic: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     borderWidth: 1.5,
     borderColor: 'rgba(255,255,255,0.2)',
   },
-  happyBadgeGrad: {
-    paddingHorizontal: 14,
-    paddingVertical: 6,
+
+  // Video Player
+  videoPlayerContainer: {
+    width: '100%',
   },
-  happyBadgeText: {
-    fontFamily: 'Inter_600SemiBold',
-    fontSize: 11,
-    color: '#fff',
-    textTransform: 'uppercase',
-    letterSpacing: 1.5,
+  videoCard: {
+    height: 200,
+    overflow: 'hidden',
+    borderWidth: 1.5,
+    borderColor: 'rgba(255,255,255,0.1)',
   },
-  headlineBlock: {
-    alignItems: 'center',
-    gap: 10,
+  videoMainImage: {
+    width: '100%',
+    height: '100%',
   },
-  headlineText: {
-    fontFamily: 'Inter_800ExtraBold',
-    fontSize: 44,
-    color: Colors.primary,
-    letterSpacing: -1.5,
-  },
-  certaintyBadge: {
+  videoEmotionBadge: {
+    position: 'absolute',
+    top: 16,
+    left: 16,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    paddingHorizontal: 14,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: BorderRadius.full,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.1)',
+    borderColor: 'rgba(255,255,255,0.15)',
+    gap: 8,
   },
-  certaintyText: {
-    fontFamily: 'Inter_600SemiBold',
-    fontSize: 13,
-    color: Colors.secondary,
-    letterSpacing: 0.5,
+  badgeDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#a855f7',
+    shadowColor: '#a855f7',
+    shadowRadius: 4,
+    elevation: 4,
   },
-  // AI Card
-  aiCard: {
-    width: '100%',
+  badgeText: {
+    fontFamily: 'Inter_700Bold',
+    fontSize: 12,
+    color: '#fff',
+    letterSpacing: 1,
+  },
+  videoControls: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 50,
     flexDirection: 'row',
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.1)',
-    borderRadius: BorderRadius.DEFAULT,
-    overflow: 'hidden',
-  },
-  accentBar: {
-    width: 4,
-  },
-  aiCardContent: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    padding: Spacing.md,
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    backgroundColor: 'rgba(0,0,0,0.3)',
     gap: 12,
   },
-  aiIconBg: {
-    backgroundColor: 'rgba(183,109,255,0.15)',
-    padding: 8,
-    borderRadius: 10,
-  },
-  aiCardTitle: {
-    fontFamily: 'Inter_700Bold',
-    fontSize: 20,
-    color: Colors.onSurface,
-    marginBottom: 6,
-  },
-  aiCardBody: {
-    fontFamily: 'Inter_400Regular',
-    fontSize: 14,
-    color: Colors.onSurfaceVariant,
-    lineHeight: 22,
-  },
-  // Bento Grid
-  bentoGrid: {
-    flexDirection: 'row',
-    gap: Spacing.gutter,
-    width: '100%',
-  },
-  bentoCard: {
+  progressBar: {
     flex: 1,
-    aspectRatio: 1,
-    padding: Spacing.md,
-    justifyContent: 'space-between',
+    height: 4,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    borderRadius: 2,
+    overflow: 'hidden',
   },
-  bentoLabel: {
+  progressFill: {
+    height: '100%',
+    backgroundColor: Colors.primary,
+  },
+  timestampText: {
+    fontFamily: 'Inter_600SemiBold',
+    fontSize: 10,
+    color: '#fff',
+  },
+
+  // Timeline
+  timelineSection: {
+    gap: 12,
+  },
+  sectionTitle: {
+    fontFamily: 'Inter_700Bold',
+    fontSize: 12,
+    color: '#94a3b8',
+    letterSpacing: 1.5,
+    marginLeft: 4,
+  },
+  timelineScroll: {
+    paddingLeft: 4,
+    gap: 12,
+  },
+  timelineFrameWrapper: {
+    width: 80,
+    height: 80,
+    borderRadius: 8,
+    overflow: 'hidden',
+    borderWidth: 2,
+    borderColor: 'transparent',
+    position: 'relative',
+  },
+  timelineFrameActive: {
+    borderColor: '#a855f7',
+    shadowColor: '#a855f7',
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
+    elevation: 8,
+  },
+  timelineFrameImage: {
+    width: '100%',
+    height: '100%',
+    opacity: 0.8,
+  },
+  timelineDot: {
+    position: 'absolute',
+    top: 6,
+    right: 6,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    borderWidth: 1.5,
+    borderColor: '#fff',
+  },
+
+  // Moment Analysis
+  momentCard: {
+    padding: 20,
+    gap: 20,
+  },
+  momentHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  momentTitle: {
+    fontFamily: 'Inter_700Bold',
+    fontSize: 24,
+    color: '#fff',
+  },
+  momentSubtitle: {
+    fontFamily: 'Inter_600SemiBold',
+    fontSize: 14,
+    color: '#94a3b8',
+    marginTop: 4,
+  },
+  timestampBadge: {
+    backgroundColor: 'rgba(168,85,247,0.1)',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 12,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(168,85,247,0.2)',
+  },
+  timestampLabel: {
+    fontFamily: 'Inter_600SemiBold',
+    fontSize: 8,
+    color: '#94a3b8',
+    textTransform: 'uppercase',
+  },
+  timestampValue: {
+    fontFamily: 'Inter_700Bold',
+    fontSize: 14,
+    color: '#fff',
+  },
+  vitalsRow: {
+    flexDirection: 'row',
+    gap: 16,
+  },
+  vitalBadge: {
+    flex: 1,
+    backgroundColor: 'rgba(255,255,255,0.03)',
+    borderRadius: 40,
+    paddingVertical: 14,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.06)',
+  },
+  vitalValueText: {
+    fontFamily: 'Inter_800ExtraBold',
+    fontSize: 24,
+    color: Colors.primary,
+  },
+  vitalLabelText: {
     fontFamily: 'Inter_700Bold',
     fontSize: 9,
     color: '#64748b',
-    textTransform: 'uppercase',
-    letterSpacing: 2,
-    marginTop: 'auto',
-    marginBottom: 2,
+    letterSpacing: 1,
+    marginTop: 2,
   },
-  bentoValue: {
-    fontFamily: 'Inter_700Bold',
-    fontSize: 26,
-    color: Colors.onSurface,
+  metricsList: {
+    gap: 16,
   },
-  // Actions
-  actionsSection: {
-    width: '100%',
-    gap: Spacing.sm,
+  metricItem: {
+    gap: 8,
   },
-  actionsHeader: {
-    fontFamily: 'Inter_600SemiBold',
-    fontSize: 11,
-    color: '#94a3b8',
-    textTransform: 'uppercase',
-    letterSpacing: 2.5,
-    textAlign: 'center',
-    marginBottom: 4,
-  },
-  actionRow: {
+  metricLabelRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    padding: Spacing.md,
-    backgroundColor: 'rgba(255,255,255,0.04)',
-    borderRadius: BorderRadius.DEFAULT,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
-    gap: 14,
-  },
-  actionIconGrad: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: Colors.gradientPurple,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.4,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  actionIconGlass: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
-    backgroundColor: Colors.surfaceContainerHigh,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.4,
-    shadowRadius: 5,
-    elevation: 3,
-  },
-  actionText: {
-    flex: 1,
-    fontFamily: 'Inter_400Regular',
-    fontSize: 16,
-    color: Colors.onSurface,
-  },
-  // New Scan CTA
-  newScanWrapper: {
-    width: '100%',
-    borderRadius: BorderRadius.full,
-    overflow: 'hidden',
-    marginTop: 8,
-    shadowColor: Colors.gradientPurple,
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.4,
-    shadowRadius: 20,
-    elevation: 10,
-  },
-  newScanBtn: {
-    paddingVertical: 20,
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
-  newScanText: {
+  metricLabel: {
+    fontFamily: 'Inter_600SemiBold',
+    fontSize: 12,
+    color: '#94a3b8',
+  },
+  metricValue: {
     fontFamily: 'Inter_700Bold',
-    fontSize: 20,
+    fontSize: 12,
     color: '#fff',
-    letterSpacing: -0.5,
+  },
+  metricBarBg: {
+    height: 6,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderRadius: 3,
+    overflow: 'hidden',
+  },
+  metricBarFill: {
+    height: '100%',
+    borderRadius: 3,
+  },
+
+  // Insight Card
+  insightCard: {
+    flexDirection: 'row',
+    padding: 16,
+    gap: 16,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(168,85,247,0.2)',
+    backgroundColor: 'rgba(168,85,247,0.03)',
+  },
+  insightIconWrapper: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: 'rgba(168,85,247,0.1)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  insightTitle: {
+    fontFamily: 'Inter_700Bold',
+    fontSize: 12,
+    color: '#fff',
+    letterSpacing: 1.5,
+    marginBottom: 6,
+  },
+  insightBody: {
+    fontFamily: 'Inter_400Regular',
+    fontSize: 13,
+    color: '#94a3b8',
+    lineHeight: 20,
   },
 });
