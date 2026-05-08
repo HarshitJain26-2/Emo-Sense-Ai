@@ -3,7 +3,7 @@
  *
  * Structure:
  * - Root Stack: Splash → Onboarding → Main (tabs) → Detection (stack) → Results (stack)
- * - Tab Navigator (Main): Home | History | Profile
+ * - Tab Navigator (Main): Scan | Insights | History | Profile
  * - Custom floating bottom tab bar matching the HTML glassmorphism nav pill
  */
 import React from 'react';
@@ -29,6 +29,7 @@ import DetectionScreen from '../screens/DetectionScreen';
 import ResultsScreen from '../screens/ResultsScreen';
 import HistoryScreen from '../screens/HistoryScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import AnalyzeMediaScreen from '../screens/AnalyzeMediaScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -37,9 +38,10 @@ const { width } = Dimensions.get('window');
 // Custom Floating Bottom Tab Bar — glassmorphism pill style from HTML
 function CustomTabBar({ state, descriptors, navigation }) {
   const tabs = [
-    { name: 'Home', icon: 'grid', iconOutline: 'grid-outline', label: 'Home' },
-    { name: 'History', icon: 'time', iconOutline: 'time-outline', label: 'History' },
-    { name: 'Profile', icon: 'settings', iconOutline: 'settings-outline', label: 'Settings' },
+    { name: 'Scan',     icon: 'scan',     iconOutline: 'scan-outline',     label: 'Scan'    },
+    { name: 'Insights', icon: 'grid',     iconOutline: 'grid-outline',     label: 'Home'    },
+    { name: 'History',  icon: 'time',     iconOutline: 'time-outline',     label: 'History' },
+    { name: 'Profile',  icon: 'settings', iconOutline: 'settings-outline', label: 'Profile' },
   ];
 
   return (
@@ -96,9 +98,10 @@ function MainTabs() {
       tabBar={(props) => <CustomTabBar {...props} />}
       screenOptions={{ headerShown: false }}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="History" component={HistoryScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="Scan"     component={AnalyzeMediaScreen} />
+      <Tab.Screen name="Insights" component={HomeScreen}         />
+      <Tab.Screen name="History"  component={HistoryScreen}      />
+      <Tab.Screen name="Profile"  component={ProfileScreen}      />
     </Tab.Navigator>
   );
 }
@@ -146,8 +149,8 @@ const tabStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-    width: width * 0.78,
-    maxWidth: 360,
+    width: width * 0.92,
+    maxWidth: 420,
     backgroundColor: 'rgba(255,255,255,0.05)',
     borderRadius: BorderRadius.full,
     borderWidth: 1,
