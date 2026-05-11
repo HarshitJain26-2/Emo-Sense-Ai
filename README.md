@@ -267,22 +267,9 @@ Declared in `app.json` via Expo plugins:
 
 1. Fork the repository
 2. Create your feature branch: `git checkout -b feature/your-feature-name`
-3. Commit your changes: `git commit -m "feat: add your feature"`
+3. Commit your changes: `git commit -m "add your feature"`
 4. Push to the branch: `git push origin feature/your-feature-name`
 5. Open a Pull Request
-
-### Commit Convention
-
-This project follows [Conventional Commits](https://www.conventionalcommits.org/):
-
-| Prefix | Use for |
-|---|---|
-| `feat:` | New feature |
-| `fix:` | Bug fix |
-| `chore:` | Maintenance, cleanup, tooling |
-| `docs:` | Documentation only changes |
-| `style:` | Formatting, no logic change |
-| `refactor:` | Code change with no feature/fix |
 
 ---
 
